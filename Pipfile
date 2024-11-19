@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyside6 = "*"
+mypy = "*"
+pylint = "*"
+pylint-gitlab = "*"
+pytest = "*"
+pytest-cov = "*"
+coverage = "*"
+pre-commit = "*"
+numpy = "*"
+matplotlib = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
+
+[scripts]

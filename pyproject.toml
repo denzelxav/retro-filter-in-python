@@ -1,0 +1,15 @@
+[tool.pytest.ini_options]
+testpaths=["tests"]
+python_files="*.py"
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+command_line = "-m pytest"
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
+
+[tool.coverage.xml]
+output = "coverage.xml"
