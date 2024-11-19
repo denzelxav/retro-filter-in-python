@@ -1,7 +1,7 @@
 import matplotlib.image as im
 import numpy as np
 
-from smoothstep import smoothstep
+from src.smoothstep import smoothstep
 
 
 def retro_filter(input_image: str | np.ndarray,
