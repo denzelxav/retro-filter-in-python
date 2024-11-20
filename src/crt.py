@@ -1,5 +1,6 @@
 import numpy as np
 from PIL import Image as im
+from numpy import ndarray
 
 from src.smoothstep import smoothstep
 
@@ -9,7 +10,7 @@ def retro_filter(
     curvature: int | float = 2,
     vignette_width: int | float = 10,
     scanline_val: int | float | None = None,
-) -> np.ndarray:
+) -> ndarray[int | ndarray[int]]:
     """Takes a rgb image or path to image and adds a CRT effect to it.
 
     Parameters:
