@@ -1,5 +1,5 @@
-import matplotlib.image as im
 import numpy as np
+from PIL import Image as im
 
 from src.smoothstep import smoothstep
 
@@ -23,7 +23,8 @@ def retro_filter(
     """
 
     if isinstance(input_image, str):
-        image = im.imread(input_image)
+        opened_image = im.open(input_image)
+        image = np.asarray(opened_image)
     elif isinstance(input_image, np.ndarray):
         image = input_image
     else:
@@ -73,13 +74,15 @@ def retro_filter(
     sin_vals = np.sin(y_coords * scanline_val + 1) * 0.15 + 1
     cos_vals = np.cos(y_coords * scanline_val + 1) * 0.10 + 1
 
+    print("mid_check", image[100:200, 100:200, :])
+
     new_image[..., 0] = np.clip(
-        image[y, x, 0] * sin_vals * vignette[..., 0] * vignette[..., 1], 0, 1
+        image[y, x, 0] * sin_vals * vignette[..., 0] * vignette[..., 1], 0, 255
     )
     new_image[..., 1] = np.clip(
-        image[y, x, 1] * cos_vals * vignette[..., 0] * vignette[..., 1], 0, 1
+        image[y, x, 1] * cos_vals * vignette[..., 0] * vignette[..., 1], 0, 255
     )
     new_image[..., 2] = np.clip(
-        image[y, x, 2] * sin_vals * vignette[..., 0] * vignette[..., 1], 0, 1
+        image[y, x, 2] * sin_vals * vignette[..., 0] * vignette[..., 1], 0, 255
     )
-    return new_image
+    return new_image[..., :3]
