@@ -22,7 +22,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(369, 104)
+        Dialog.resize(374, 278)
         self.path_to_file = QLineEdit(Dialog)
         self.path_to_file.setObjectName(u"path_to_file")
         self.path_to_file.setGeometry(QRect(10, 30, 261, 21))
@@ -35,6 +35,9 @@ class Ui_Dialog(object):
         self.label = QLabel(Dialog)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(10, 10, 151, 16))
+        self.image_label = QLabel(Dialog)
+        self.image_label.setObjectName(u"image_label")
+        self.image_label.setGeometry(QRect(30, 110, 211, 141))
 
         self.retranslateUi(Dialog)
 
@@ -46,5 +49,6 @@ class Ui_Dialog(object):
         self.browse_button.setText(QCoreApplication.translate("Dialog", u"Browse...", None))
         self.file_confirm.setText(QCoreApplication.translate("Dialog", u"CRTify!", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"Select image to make retro!", None))
+        self.image_label.setText(QCoreApplication.translate("Dialog", u"Output image will be here", None))
     # retranslateUi
 
