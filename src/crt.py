@@ -34,7 +34,6 @@ def retro_filter(
     new_image = np.zeros_like(image)
 
     screenheight, screenwidth, channels = image.shape
-
     if scanline_val is None:
         scanline_val = screenheight
 

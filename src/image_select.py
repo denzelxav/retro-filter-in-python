@@ -59,9 +59,9 @@ class MainWindow(QDialog):
 
         curvature = self.ui.input_curvature.value()
         scan_line_val = (
-            None
+            self.ui.input_scan_lines.value()
             if self.ui.custom_scan_lines.isChecked()
-            else self.ui.input_scan_lines.value()
+            else None
         )
         vignette_width = self.ui.input_vignette.value()
 
