@@ -19,6 +19,8 @@ class MainWindow(QDialog):
         self.standard_width = self.width()
 
         # buttons
+        self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint)
+        self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint)
         self.ui.browse_button.clicked.connect(self.browsefiles)
         self.ui.file_confirm.clicked.connect(self.crtify)
         self.ui.custom_scan_lines.stateChanged.connect(self.custom_scan_lines)
