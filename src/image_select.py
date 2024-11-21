@@ -35,7 +35,8 @@ class MainWindow(QDialog):
         self.ui.input_scan_lines.setEnabled(self.ui.custom_scan_lines.isChecked())
 
     def contextMenuEvent(self, event):
-        self.ui.image_label.context_menu.exec_(event.globalPos())
+        if self.ui.image_label.underMouse() and self.image is not None:
+            self.ui.image_label.context_menu.exec_(event.globalPos())
 
     def handle_save_image(self):
         fname = QFileDialog.getSaveFileName(
