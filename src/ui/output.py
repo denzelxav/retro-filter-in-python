@@ -43,7 +43,7 @@ class Ui_ImageSelector(object):
         self.image_select_label.setGeometry(QRect(10, 10, 151, 16))
         self.image_label = QLabel(ImageSelector)
         self.image_label.setObjectName(u"image_label")
-        self.image_label.setGeometry(QRect(10, 190, 211, 141))
+        self.image_label.setGeometry(QRect(10, 190, 351, 141))
         self.input_curvature = QDoubleSpinBox(ImageSelector)
         self.input_curvature.setObjectName(u"input_curvature")
         self.input_curvature.setGeometry(QRect(70, 90, 88, 22))

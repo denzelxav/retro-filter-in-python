@@ -1,7 +1,7 @@
 import sys
 import os
 from PySide6 import QtWidgets
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QPixmap, QImage, QIcon
 from PySide6.QtWidgets import QDialog, QApplication, QFileDialog, QMenu
 from numpy import ndarray
@@ -16,6 +16,8 @@ class MainWindow(QDialog):
         self.ui.setupUi(self)
         self.image = None
         self.ui.path_to_file.setText(f"C:/Users/{os.getlogin()}/Downloads/")
+        self.standard_width = self.width()
+
         # buttons
         self.ui.browse_button.clicked.connect(self.browsefiles)
         self.ui.file_confirm.clicked.connect(self.crtify)
@@ -78,6 +80,7 @@ class MainWindow(QDialog):
             self.ui.image_label.setText("Error: file not found")
         image_height, image_width, image_channels = image_array.shape
         bytes_per_line = image_width * image_channels
+
         self.image = QImage(
             image_array, image_width, image_height, bytes_per_line, QImage.Format_RGB888
         )
@@ -89,3 +92,22 @@ class MainWindow(QDialog):
             )
         )
         self.ui.image_label.resize(image_width, image_height)
+        self.resize_for_image()
+
+    def resize_for_image(self) -> None:
+        """Adjusts the minimum window size to make the picture fit"""
+        image_x, image_y = self.ui.image_label.x(), self.ui.image_label.y()
+        image_width, image_height = (
+            self.ui.image_label.width(),
+            self.ui.image_label.height(),
+        )
+        print(self.size())
+        window_width = (
+            image_x + image_width
+            if image_x + image_width > self.standard_width
+            else self.standard_width
+        )
+        window_height = image_y + image_height
+        new_size = QSize(window_width, window_height)
+        print(new_size)
+        self.setMinimumSize(new_size)
