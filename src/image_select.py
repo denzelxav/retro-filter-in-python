@@ -33,23 +33,8 @@ class MainWindow(QDialog):
 
         self.setWindowIcon(QIcon("../../crt_icon.ico"))
 
-    def custom_scan_lines(self):
-        self.ui.input_scan_lines.setEnabled(self.ui.custom_scan_lines.isChecked())
-
-    def contextMenuEvent(self, event):
-        if self.ui.image_label.underMouse() and self.image is not None:
-            self.ui.image_label.context_menu.exec_(event.globalPos())
-
-    def handle_save_image(self):
-        fname = QFileDialog.getSaveFileName(
-            self,
-            "Save Image",
-            f"C:/Users/{os.getlogin()}/Pictures/*.jpg",
-            filter=".jpg(*.jpg);;.PNG(*.png)",
-        )
-        print(self.image.save(fname[0]))
-
     def browsefiles(self):
+        """ " Opens file dialog for user to select file. Runs when clicking browse button."""
         fname = QFileDialog.getOpenFileName(
             self,
             "Open file",
@@ -59,7 +44,8 @@ class MainWindow(QDialog):
         if fname[0]:
             self.ui.path_to_file.setText(fname[0])
 
-    def crtify(self):
+    def crtify(self) -> None:
+        """ "CRTifies selected image and sets it as self.image. Runs when clicking CRTify button."""
         file_path = self.ui.path_to_file.text()
 
         curvature = self.ui.input_curvature.value()
@@ -104,7 +90,6 @@ class MainWindow(QDialog):
             self.ui.image_label.width(),
             self.ui.image_label.height(),
         )
-        print(self.size())
         window_width = (
             image_x + image_width
             if image_x + image_width > self.standard_width
@@ -112,5 +97,21 @@ class MainWindow(QDialog):
         )
         window_height = image_y + image_height
         new_size = QSize(window_width, window_height)
-        print(new_size)
         self.setMinimumSize(new_size)
+
+    def custom_scan_lines(self):
+        self.ui.input_scan_lines.setEnabled(self.ui.custom_scan_lines.isChecked())
+
+    def contextMenuEvent(self, event):
+        if self.ui.image_label.underMouse() and self.image is not None:
+            self.ui.image_label.context_menu.exec_(event.globalPos())
+
+    def handle_save_image(self):
+        """ "Opens file explorer to save image set to self.image. Runs when clicking save image in context menu."""
+        fname = QFileDialog.getSaveFileName(
+            self,
+            "Save Image",
+            f"C:/Users/{os.getlogin()}/Pictures/*.jpg",
+            filter=".jpg(*.jpg);;.PNG(*.png)",
+        )
+        self.image.save(fname[0])
