@@ -7,7 +7,7 @@ from src.image_select import MainWindow
 
 
 def create_app() -> tuple[QApplication, QWidget]:
-    app = QApplication(sys.argv)
+    app = QApplication.instance() or QApplication(sys.argv)
     myApp = MainWindow()
     appIcon = QIcon()
     appIcon.addFile("..\\crt_icon.ico")
