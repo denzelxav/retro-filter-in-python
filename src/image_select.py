@@ -109,7 +109,7 @@ class MainWindow(QDialog):
         new_size = QSize(window_width, window_height)
         self.setMinimumSize(new_size)
 
-    def contextMenuEvent(self, event):
+    def contextMenuEvent(self, event) -> None:
         if self.ui.image_label.underMouse() and self.image is not None:
             self.ui.image_label.context_menu.exec_(event.globalPos())
 
