@@ -108,10 +108,11 @@ class MainWindow(QDialog):
 
     def handle_save_image(self) -> None:
         """Opens file explorer and saves self.image at the given path. Runs when clicking save image in context menu."""
-        fname = QFileDialog.getSaveFileName(
-            self,
-            "Save Image",
-            f"C:/Users/{os.getlogin()}/Pictures/*.jpg",
-            filter=".jpg(*.jpg);;.PNG(*.png)",
-        )
-        self.image.save(fname[0], quality=100)
+        if isinstance(self.image, QImage):
+            fname = QFileDialog.getSaveFileName(
+                self,
+                "Save Image",
+                f"C:/Users/{os.getlogin()}/Pictures/*.jpg",
+                filter=".jpg(*.jpg);;.PNG(*.png)",
+            )
+            self.image.save(fname[0], quality=100)
