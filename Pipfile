@@ -16,6 +16,7 @@ numpy = "*"
 matplotlib = "*"
 pillow = "*"
 pyinstaller = "*"
+scikit-image = "*"
 
 [dev-packages]
 
