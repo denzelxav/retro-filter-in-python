@@ -6,6 +6,7 @@ from src.crt import retro_filter
 from tests.test_crt import is_similar
 from src.__main__ import create_app
 
+from PySide6.QtGui import QImage
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt
 
@@ -15,6 +16,14 @@ def app(qtbot):
     app, window = create_app()
     qtbot.addWidget(window)
     return window
+
+
+def qimage_to_array(image: QImage, channels: int = 3) -> np.ndarray:
+    """Converts QImage to numpy array."""
+    height, width = image.height(), image.width()
+    image_bits = image.bits()
+    image_array = np.array(image_bits).reshape(height, width, 3)
+    return image_array
 
 
 def test_crtify_button(app, qtbot):
@@ -32,10 +41,7 @@ def test_crtify_custom_settings(app, qtbot):
     app.ui.input_scan_lines.setValue(500)
     app.ui.input_vignette.setValue(20)
     qtbot.mouseClick(app.ui.file_confirm, Qt.LeftButton)
-    image_bits = app.image.bits()
-    app_result = np.array(image_bits).reshape(
-        (app.image.height(), app.image.width(), 3)
-    )
+    app_result = qimage_to_array(app.image)
     function_result = retro_filter(
         ".\\tests\\test_images\\Eebee.jpg",
         curvature=5,
