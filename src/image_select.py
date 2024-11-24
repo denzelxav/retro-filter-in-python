@@ -10,7 +10,7 @@ from src.ui.output import Ui_ImageSelector
 
 
 class MainWindow(QDialog):
-    def __init__(self):
+    def __init__(self) -> None:
         super(MainWindow, self).__init__()
         self.ui = Ui_ImageSelector()
         self.ui.setupUi(self)
@@ -33,8 +33,11 @@ class MainWindow(QDialog):
 
         self.setWindowIcon(QIcon("../../crt_icon.ico"))
 
-    def browsefiles(self):
-        """ " Opens file dialog for user to select file. Runs when clicking browse button."""
+    def custom_scan_lines(self) -> None:
+        self.ui.input_scan_lines.setEnabled(self.ui.custom_scan_lines.isChecked())
+
+    def browsefiles(self) -> None:
+        """Opens file explorer to select file and sets it in the path_to_file box. Runs when clicking browse"""
         fname = QFileDialog.getOpenFileName(
             self,
             "Open file",
@@ -45,7 +48,7 @@ class MainWindow(QDialog):
             self.ui.path_to_file.setText(fname[0])
 
     def crtify(self) -> None:
-        """ "CRTifies selected image and sets it as self.image. Runs when clicking CRTify button."""
+        """ "CRTifies image in path_to_file box and sets the result as self.image. Runs when clicking CRTify."""
         file_path = self.ui.path_to_file.text()
 
         curvature = self.ui.input_curvature.value()
@@ -84,7 +87,7 @@ class MainWindow(QDialog):
         self.resize_for_image()
 
     def resize_for_image(self) -> None:
-        """Adjusts the minimum window size to make the picture fit"""
+        """Adjusts the minimum window size to make the picture fit. Runs every time self.image is changed"""
         image_x, image_y = self.ui.image_label.x(), self.ui.image_label.y()
         image_width, image_height = (
             self.ui.image_label.width(),
@@ -99,15 +102,12 @@ class MainWindow(QDialog):
         new_size = QSize(window_width, window_height)
         self.setMinimumSize(new_size)
 
-    def custom_scan_lines(self):
-        self.ui.input_scan_lines.setEnabled(self.ui.custom_scan_lines.isChecked())
-
-    def contextMenuEvent(self, event):
+    def contextMenuEvent(self, event) -> None:
         if self.ui.image_label.underMouse() and self.image is not None:
             self.ui.image_label.context_menu.exec_(event.globalPos())
 
-    def handle_save_image(self):
-        """ "Opens file explorer to save image set to self.image. Runs when clicking save image in context menu."""
+    def handle_save_image(self) -> None:
+        """Opens file explorer and saves self.image at the given path. Runs when clicking save image in context menu."""
         fname = QFileDialog.getSaveFileName(
             self,
             "Save Image",
