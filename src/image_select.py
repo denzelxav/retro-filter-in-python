@@ -17,7 +17,7 @@ class MainWindow(QDialog):
         super(MainWindow, self).__init__()
         self.ui = Ui_ImageSelector()
         self.ui.setupUi(self)
-        self.image = None
+        self.image: None | QImage = None
         self.ui.path_to_file.setText(f"C:/Users/{os.getlogin()}/Downloads/")
         self.standard_width = self.width()
 
@@ -131,7 +131,7 @@ class MainWindow(QDialog):
                 f"C:/Users/{os.getlogin()}/Pictures/*.jpg",
                 filter=".jpg(*.jpg);;.PNG(*.png)",
             )
-            self.image.save(fname[0])
+            self.image.save(fname[0], quality=100)
 
     def image_temp_file(self, format=".jpg"):
         temp_file = tempfile.NamedTemporaryFile(
