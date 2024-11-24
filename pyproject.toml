@@ -1,5 +1,11 @@
 [tool.pytest.ini_options]
-testpaths=["tests"]
+minversion = "6.0"
+pythonpath = [
+"src"
+]
+testpaths = [
+"tests"
+]
 python_files="*.py"
 
 [tool.coverage.run]
