@@ -1,5 +1,8 @@
+import subprocess
 import sys
 import os
+import tempfile
+
 from PySide6 import QtWidgets
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QPixmap, QImage, QIcon
@@ -27,8 +30,12 @@ class MainWindow(QDialog):
 
         # context menu
         self.ui.image_label.context_menu = QMenu(self)
+        open_in_viewer = self.ui.image_label.context_menu.addAction(
+            "Open Image in Viewer"
+        )
         save_image = self.ui.image_label.context_menu.addAction("Save Image")
 
+        open_in_viewer.triggered.connect(self.open_image)
         save_image.triggered.connect(self.handle_save_image)
 
         self.setWindowIcon(QIcon("../../crt_icon.ico"))
@@ -39,6 +46,15 @@ class MainWindow(QDialog):
     def contextMenuEvent(self, event):
         if self.ui.image_label.underMouse() and self.image is not None:
             self.ui.image_label.context_menu.exec_(event.globalPos())
+
+    def open_image(self):
+        image_path = self.image_temp_file()
+        if sys.platform == "win32":
+            os.startfile(image_path)
+        elif sys.platform == "darwin":
+            os.system(f'open "{image_path}"')
+        else:  # Assuming a Linux-based system
+            os.system(f'xdg-open "{image_path}"')
 
     def handle_save_image(self):
         fname = QFileDialog.getSaveFileName(
@@ -114,3 +130,11 @@ class MainWindow(QDialog):
         new_size = QSize(window_width, window_height)
         print(new_size)
         self.setMinimumSize(new_size)
+
+    def image_temp_file(self, format=".jpg"):
+        temp_file = tempfile.NamedTemporaryFile(
+            delete=False, suffix=f"{format.lower()}"
+        )
+        temp_file.close()
+        self.image.save(temp_file.name, quality=100)
+        return temp_file.name
