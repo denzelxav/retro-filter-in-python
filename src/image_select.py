@@ -1,5 +1,8 @@
+import subprocess
 import sys
 import os
+import tempfile
+
 from PySide6 import QtWidgets
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QPixmap, QImage, QIcon
@@ -27,8 +30,12 @@ class MainWindow(QDialog):
 
         # context menu
         self.ui.image_label.context_menu = QMenu(self)
+        open_in_viewer = self.ui.image_label.context_menu.addAction(
+            "Open Image in Viewer"
+        )
         save_image = self.ui.image_label.context_menu.addAction("Save Image")
 
+        open_in_viewer.triggered.connect(self.open_image)
         save_image.triggered.connect(self.handle_save_image)
 
         self.setWindowIcon(QIcon("../../crt_icon.ico"))
@@ -102,16 +109,34 @@ class MainWindow(QDialog):
         new_size = QSize(window_width, window_height)
         self.setMinimumSize(new_size)
 
-    def contextMenuEvent(self, event) -> None:
+    def contextMenuEvent(self, event):
         if self.ui.image_label.underMouse() and self.image is not None:
             self.ui.image_label.context_menu.exec_(event.globalPos())
 
+    def open_image(self):
+        image_path = self.image_temp_file()
+        if sys.platform == "win32":
+            os.startfile(image_path)
+        elif sys.platform == "darwin":
+            os.system(f'open "{image_path}"')
+        else:  # Assuming a Linux-based system
+            os.system(f'xdg-open "{image_path}"')
+
     def handle_save_image(self) -> None:
         """Opens file explorer and saves self.image at the given path. Runs when clicking save image in context menu."""
-        fname = QFileDialog.getSaveFileName(
-            self,
-            "Save Image",
-            f"C:/Users/{os.getlogin()}/Pictures/*.jpg",
-            filter=".jpg(*.jpg);;.PNG(*.png)",
+        if self.image:
+            fname = QFileDialog.getSaveFileName(
+                self,
+                "Save Image",
+                f"C:/Users/{os.getlogin()}/Pictures/*.jpg",
+                filter=".jpg(*.jpg);;.PNG(*.png)",
+            )
+            self.image.save(fname[0])
+
+    def image_temp_file(self, format=".jpg"):
+        temp_file = tempfile.NamedTemporaryFile(
+            delete=False, suffix=f"{format.lower()}"
         )
-        self.image.save(fname[0])
+        temp_file.close()
+        self.image.save(temp_file.name, quality=100)
+        return temp_file.name
