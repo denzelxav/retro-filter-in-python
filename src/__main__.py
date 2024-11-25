@@ -6,9 +6,9 @@ from PySide6.QtWidgets import QApplication, QWidget
 from src.image_select import MainWindow
 
 
-def create_app() -> tuple[QApplication, QWidget]:
+def create_app(test_mode: bool = False) -> tuple[QApplication, QWidget]:
     app = QApplication.instance() or QApplication(sys.argv)
-    myApp = MainWindow()
+    myApp = MainWindow(test_mode)
     appIcon = QIcon()
     appIcon.addFile("..\\crt_icon.ico")
     myApp.setWindowIcon(appIcon)

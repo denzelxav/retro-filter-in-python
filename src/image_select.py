@@ -13,13 +13,18 @@ from src.ui.output import Ui_ImageSelector
 
 
 class MainWindow(QDialog):
-    def __init__(self) -> None:
+    def __init__(self, test_mode: bool = False) -> None:
         super(MainWindow, self).__init__()
         self.ui = Ui_ImageSelector()
         self.ui.setupUi(self)
         self.image: None | QImage = None
         self.ui.path_to_file.setText(f"C:/Users/{os.getlogin()}/Downloads/")
         self.standard_width = self.width()
+        self.test_mode = test_mode
+        if self.test_mode:
+            self.test_path: None | str = os.path.abspath(
+                ".\\tests\\test_images\\test_image.jpg"
+            )
 
         # buttons
         self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint)
@@ -34,6 +39,7 @@ class MainWindow(QDialog):
             "Open Image in Viewer"
         )
         save_image = self.ui.image_label.context_menu.addAction("Save Image")
+        save_image.setObjectName("save_image")
 
         open_in_viewer.triggered.connect(self.open_image)
         save_image.triggered.connect(self.handle_save_image)
@@ -124,13 +130,17 @@ class MainWindow(QDialog):
 
     def handle_save_image(self) -> None:
         """Opens file explorer and saves self.image at the given path. Runs when clicking save image in context menu."""
-        if self.image:
+        if not self.test_mode:
             fname = QFileDialog.getSaveFileName(
                 self,
                 "Save Image",
                 f"C:/Users/{os.getlogin()}/Pictures/*.jpg",
                 filter=".jpg(*.jpg);;.PNG(*.png)",
             )
+        elif self.test_mode:
+            fname = self.test_path, "placeholder text"
+
+        if isinstance(self.image, QImage):
             self.image.save(fname[0], quality=100)
 
     def image_temp_file(self, format=".jpg"):
