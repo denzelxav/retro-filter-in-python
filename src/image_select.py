@@ -4,7 +4,7 @@ import os
 import tempfile
 
 from PySide6 import QtWidgets
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt, QSize, Slot
 from PySide6.QtGui import QPixmap, QImage, QIcon
 from PySide6.QtWidgets import QDialog, QApplication, QFileDialog, QMenu
 from numpy import ndarray
@@ -40,9 +40,11 @@ class MainWindow(QDialog):
 
         self.setWindowIcon(QIcon("../../crt_icon.ico"))
 
+    @Slot()
     def custom_scan_lines(self) -> None:
         self.ui.input_scan_lines.setEnabled(self.ui.custom_scan_lines.isChecked())
 
+    @Slot()
     def browsefiles(self) -> None:
         """Opens file explorer to select file and sets it in the path_to_file box. Runs when clicking browse"""
         fname = QFileDialog.getOpenFileName(
@@ -54,6 +56,7 @@ class MainWindow(QDialog):
         if fname[0]:
             self.ui.path_to_file.setText(fname[0])
 
+    @Slot()
     def crtify(self) -> None:
         """ "CRTifies image in path_to_file box and sets the result as self.image. Runs when clicking CRTify."""
         file_path = self.ui.path_to_file.text()
@@ -113,6 +116,7 @@ class MainWindow(QDialog):
         if self.ui.image_label.underMouse() and self.image is not None:
             self.ui.image_label.context_menu.exec_(event.globalPos())
 
+    @Slot()
     def open_image(self):
         image_path = self.image_temp_file()
         if sys.platform == "win32":
@@ -122,6 +126,7 @@ class MainWindow(QDialog):
         else:  # Assuming a Linux-based system
             os.system(f'xdg-open "{image_path}"')
 
+    @Slot()
     def handle_save_image(self) -> None:
         """Opens file explorer and saves self.image at the given path. Runs when clicking save image in context menu."""
         if self.image:
