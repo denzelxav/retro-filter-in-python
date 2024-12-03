@@ -14,6 +14,10 @@ coverage = "*"
 pre-commit = "*"
 numpy = "*"
 matplotlib = "*"
+pillow = "*"
+pyinstaller = "*"
+scikit-image = "*"
+pytest-qt = "*"
 
 [dev-packages]
 
