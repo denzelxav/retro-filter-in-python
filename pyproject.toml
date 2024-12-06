@@ -1,3 +1,11 @@
+[project]
+name = "crtifier"
+version = "1.0.0"
+dependencies = ["pyside6", "pillow", "scikit-image"]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-qt"]
+
 [tool.pytest.ini_options]
 minversion = "6.0"
 pythonpath = [

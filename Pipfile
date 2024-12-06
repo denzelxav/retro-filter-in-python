@@ -18,6 +18,7 @@ pillow = "*"
 pyinstaller = "*"
 scikit-image = "*"
 pytest-qt = "*"
+icecream = "*"
 
 [dev-packages]
 
